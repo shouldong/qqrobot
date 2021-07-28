@@ -4,7 +4,7 @@ const { createClient, segment} = require("oicq");
 const uin = 631676243;
 const bot = createClient(uin)
 
-let GROUP_ID = "647415772";
+let TEST_GROUP_ID = "647415772";
 
 function online() {
     bot.on("system", (data) => {
@@ -18,9 +18,7 @@ function online() {
     bot.on("system.online", () => {
         console.log("上线了！");
         console.log(bot.getGroupList().data);
-
-        var result = bot.sendGroupMsg("647415772", "hello???");
-        console.log(result.retcode + " " + result.status);
+        share("突然出现~", false)
     });
     bot.on("system.offline", () => {
         console.log("下线了！");
@@ -36,12 +34,16 @@ function online() {
         data.reply("hello, i'm a robot.");
     })
 
-    bot.login("23dd23b8cf68e175421e9bf7bf97315a");//mm:123456
+    bot.login("23dd23b8cf68e175421e9bf7bf97315a")//mm:123456
 }
 
-function share(message) {
+function share(message, atAll) {
     console.log(message)
-    bot.sendGroupMsg(GROUP_ID, "@全体成员 " + message)
+    if (atAll) {
+        message = "@全体成员 " + message
+    }
+    let result = bot.sendGroupMsg(TEST_GROUP_ID, message)
+    console.log("sendGroupMsg; " + result.retcode + "; " + result.status)
 }
 
 module.exports = {
