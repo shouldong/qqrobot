@@ -50,7 +50,7 @@ function checkUpdate() {
             let json = JSON.parse(data)
             let vlist = json.data.list.vlist
             let bvid = vlist[0].bvid
-            console.log("checkUpdate: " + vlist[0])
+            console.log("checkUpdate: " + bvid)
             if (lastUpdateVid !== bvid) {
                 lastUpdateVid = bvid
                 fs.writeFile('./data/lastVid', bvid, function (err) {
@@ -60,7 +60,7 @@ function checkUpdate() {
                         console.log("writeFile success")
                     }
                 })
-                proxy.share("求三连[爱心]\nhttps://www.bilibili.com/video/" + bvid, true)
+                proxy.share("更新啦！求三连\nhttps://www.bilibili.com/video/" + bvid, true)
             } else {
                 console.log("up主还未更新~")
             }
@@ -83,8 +83,11 @@ function checkRecord() {
             let ctime = archives[0].ctime
             let bvid = archives[0].bvid
             let title = archives[0].title
-            console.log("checkRecord: " + pubdate + ";" + ctime)
-            if (true) {
+            let todayStr = new Date().toLocaleDateString();
+            let pubdateStr = new Date(pubdate * 1000).toLocaleDateString();
+            let ctimeStr = new Date(ctime * 1000).toLocaleDateString();
+            console.log("checkRecord: " + pubdateStr + ";" + ctimeStr + "; " + todayStr)
+            if (todayStr === ctimeStr) {
                 proxy.share(title + "\nhttps://www.bilibili.com/video/" + bvid, true)
             } else {
                 console.log("up主昨天休息~")
@@ -123,7 +126,7 @@ function stopVideoJob() {
 
 function scheduleRecordJob() {
     jobRecordCancel = false
-    schedule.scheduleJob(JOB_VIDEO, '0 0/1 * * * *', ()=>{
+    schedule.scheduleJob(JOB_VIDEO, '0 0 10 * * *', ()=>{
         console.log("checkRecord: " + new Date())
         checkRecord()
     })
@@ -135,23 +138,20 @@ function stopRecordJob() {
 }
 
 function start() {
+    if (fs.existsSync('./data/lastVid')) {
+        let buffer = fs.readFileSync('./data/lastVid')
+        lastUpdateVid = buffer.toString()
+    }
+    console.log("lastUpdateVid: " + lastUpdateVid)
+
     scheduleLiveJob()
     scheduleVideoJob()
-    // scheduleRecordJob()
+    scheduleRecordJob()
 
     schedule.scheduleJob("job_live_reset", '30 7 2 * * *', ()=>{
         console.log("job_live_reset: " + jobLiveCancel)
         if (jobLiveCancel) {
             scheduleLiveJob()
-        }
-    })
-
-    fs.readFile('./data/lastVid', function (err, data) {
-        if (err) {
-            console.error("readFile error: " + err);
-        } else {
-            console.log("readFile lastVid: " + data);
-            lastUpdateVid = data;
         }
     })
 }
