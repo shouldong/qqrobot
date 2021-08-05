@@ -26,13 +26,17 @@ function checkLive() {
             data += chunk
         })
         resp.on('end', () => {
-            let json = JSON.parse(data)
-            if (json.data.live_stream_status === 1) {
-                console.log("checkLive: " + json)
-                stopLiveJob()
-                proxy.share("开播啦\nhttps://live.bilibili.com/915663", true)
-            } else {
-                console.log("还在拔腿毛，请稍等~")
+            try {
+                let json = JSON.parse(data)
+                if (json.data.live_stream_status === 1) {
+                    console.log("checkLive: " + json)
+                    stopLiveJob()
+                    proxy.share("开播啦\nhttps://live.bilibili.com/915663", true)
+                } else {
+                    console.log("还在拔腿毛，请稍等~")
+                }
+            } catch (err) {
+                console.error("checkLive error: " + err.stack)
             }
         })
     }).on("error", (err) => {
@@ -47,22 +51,26 @@ function checkUpdate() {
             data += chunk
         })
         resp.on('end', () => {
-            let json = JSON.parse(data)
-            let vlist = json.data.list.vlist
-            let bvid = vlist[0].bvid
-            console.log("checkUpdate: " + bvid)
-            if (lastUpdateVid !== bvid) {
-                lastUpdateVid = bvid
-                fs.writeFile('./data/lastVid', bvid, function (err) {
-                    if (err) {
-                        console.error("writeFile error: " + err)
-                    } else {
-                        console.log("writeFile success")
-                    }
-                })
-                proxy.share("更新啦！求三连\nhttps://www.bilibili.com/video/" + bvid, true)
-            } else {
-                console.log("up主还未更新~")
+            try {
+                let json = JSON.parse(data)
+                let vlist = json.data.list.vlist
+                let bvid = vlist[0].bvid
+                console.log("checkUpdate: " + bvid)
+                if (lastUpdateVid !== bvid) {
+                    lastUpdateVid = bvid
+                    fs.writeFile('./data/lastVid', bvid, function (err) {
+                        if (err) {
+                            console.error("writeFile error: " + err)
+                        } else {
+                            console.log("writeFile success")
+                        }
+                    })
+                    proxy.share("更新啦！求三连\nhttps://www.bilibili.com/video/" + bvid, true)
+                } else {
+                    console.log("up主还未更新~")
+                }
+            } catch (err) {
+                console.error("checkUpdate error: " + err.stack)
             }
         })
     }).on("error", (err) => {
@@ -77,20 +85,24 @@ function checkRecord() {
             data += chunk
         })
         resp.on('end', () => {
-            let json = JSON.parse(data)
-            let archives = json.data.list.archives
-            let pubdate = archives[0].pubdate
-            let ctime = archives[0].ctime
-            let bvid = archives[0].bvid
-            let title = archives[0].title
-            let todayStr = new Date().toLocaleDateString();
-            let pubdateStr = new Date(pubdate * 1000).toLocaleDateString();
-            let ctimeStr = new Date(ctime * 1000).toLocaleDateString();
-            console.log("checkRecord: " + pubdateStr + ";" + ctimeStr + "; " + todayStr)
-            if (todayStr === ctimeStr) {
-                proxy.share(title + "\nhttps://www.bilibili.com/video/" + bvid, false)
-            } else {
-                console.log("up主昨天休息~")
+            try {
+                let json = JSON.parse(data)
+                let archives = json.data.list.archives
+                let pubdate = archives[0].pubdate
+                let ctime = archives[0].ctime
+                let bvid = archives[0].bvid
+                let title = archives[0].title
+                let todayStr = new Date().toLocaleDateString();
+                let pubdateStr = new Date(pubdate * 1000).toLocaleDateString();
+                let ctimeStr = new Date(ctime * 1000).toLocaleDateString();
+                console.log("checkRecord: " + pubdateStr + ";" + ctimeStr + "; " + todayStr)
+                if (todayStr === ctimeStr) {
+                    proxy.share(title + "\nhttps://www.bilibili.com/video/" + bvid, false)
+                } else {
+                    console.log("up主昨天休息~")
+                }
+            } catch (err) {
+                console.error("checkRecord error: " + err.stack)
             }
         })
     }).on("error", (err) => {
