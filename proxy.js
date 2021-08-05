@@ -64,10 +64,13 @@ function share(message, atAll) {
     if (!isOnline) {
         return
     }
+    let result
     if (atAll) {
         message = "@全体成员 " + message
+        result = bot.sendGroupMsg(WORK_GROUP_ID, message)
+    } else {
+        result = bot.sendPrivateMsg(243496254, message)
     }
-    let result = bot.sendGroupMsg(WORK_GROUP_ID, message)
     console.log("sendGroupMsg; " + result.retcode + "; " + result.status)
 }
 

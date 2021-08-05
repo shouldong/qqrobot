@@ -88,7 +88,7 @@ function checkRecord() {
             let ctimeStr = new Date(ctime * 1000).toLocaleDateString();
             console.log("checkRecord: " + pubdateStr + ";" + ctimeStr + "; " + todayStr)
             if (todayStr === ctimeStr) {
-                proxy.share(title + "\nhttps://www.bilibili.com/video/" + bvid, true)
+                proxy.share(title + "\nhttps://www.bilibili.com/video/" + bvid, false)
             } else {
                 console.log("up主昨天休息~")
             }
