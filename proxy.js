@@ -10,6 +10,9 @@ let TEST_GROUP_ID = 647415772
 let WORK_GROUP_ID = 1104280840
 let MYSELF_ID = 243496254
 
+let FACE_ID_HEART = 66;
+let FACE_ID_FUNNY = 178;
+
 function online() {
     qqBot.on("system", (data) => {
         console.log("system event: " + data.system_type)
@@ -67,10 +70,13 @@ function share(message, url, atAll) {
         return
     }
     if (atAll) {
-        qqBot.sendGroupMsg(WORK_GROUP_ID, segment.at("all", message)).then(r => console.log("result: " + r.retcode + "; " + r.status))
-        qqBot.sendGroupMsg(WORK_GROUP_ID, segment.share(url, message)).then(r => console.log("result: " + r.retcode + "; " + r.status));
+        qqBot.sendGroupMsg(WORK_GROUP_ID, segment.at("all", message), segment.face(FACE_ID_HEART), segment.text("\n" + url))
+            .then(r => console.log("result: " + r.retcode + "; " + r.status))
+        // qqBot.sendGroupMsg(WORK_GROUP_ID, segment.share(url, message))
+        // .then(r => console.log("result: " + r.retcode + "; " + r.status));
     } else {
-        qqBot.sendPrivateMsg(MYSELF_ID, message + "\n" + url).then(r => console.log("result: " + r.retcode + "; " + r.status))
+        qqBot.sendPrivateMsg(MYSELF_ID, message + "\n" + url)
+            .then(r => console.log("result: " + r.retcode + "; " + r.status))
     }
 }
 
