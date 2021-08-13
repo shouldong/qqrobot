@@ -11,13 +11,15 @@ function autoReply(content) {
             return "你講咩嘢？I'm just a robot."
         }
     }
+    if (content.search('瓜瓜') !== -1 && content.search('贴贴') !== -1) {
+        return "我也要贴贴瓜瓜"
+    }
     return null
 }
 
 function isBeAt(content) {
     return content.search('CQ:at,qq=631676243,text=@我是机器瓜') !== -1;
 }
-
 
 function dispatchContent(content) {
     console.log("dispatchContent: " + content)

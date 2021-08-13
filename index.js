@@ -1,7 +1,7 @@
 "use strict";
 
 const proxy = require("./proxy")
-const task = require("./task")
+const remind = require("./remind")
 
 proxy.online()
-task.start()
+remind.start()

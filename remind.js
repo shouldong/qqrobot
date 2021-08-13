@@ -31,7 +31,7 @@ function checkLive() {
                 if (json.data.live_stream_status === 1) {
                     console.log("checkLive: " + json)
                     stopLiveJob()
-                    proxy.share("开播啦\nhttps://live.bilibili.com/915663", true)
+                    proxy.share("开播啦", "https://live.bilibili.com/915663", true)
                 } else {
                     console.log("还在拔腿毛，请稍等~")
                 }
@@ -65,7 +65,7 @@ function checkUpdate() {
                             console.log("writeFile success")
                         }
                     })
-                    proxy.share("更新啦！求三连\nhttps://www.bilibili.com/video/" + bvid, true)
+                    proxy.share("更新啦！求三连", "https://www.bilibili.com/video/" + bvid, true)
                 } else {
                     console.log("up主还未更新~")
                 }
@@ -97,7 +97,7 @@ function checkRecord() {
                 let ctimeStr = new Date(ctime * 1000).toLocaleDateString();
                 console.log("checkRecord: " + pubdateStr + ";" + ctimeStr + "; " + todayStr)
                 if (todayStr === ctimeStr) {
-                    proxy.share(title + "\nhttps://www.bilibili.com/video/" + bvid, false)
+                    proxy.share(title, "https://www.bilibili.com/video/" + bvid, false)
                 } else {
                     console.log("up主昨天休息~")
                 }
