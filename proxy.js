@@ -70,7 +70,7 @@ function share(message, url, atAll) {
         return
     }
     if (atAll) {
-        qqBot.sendGroupMsg(WORK_GROUP_ID, segment.at("all", message), segment.face(FACE_ID_HEART), segment.text("\n" + url))
+        qqBot.sendGroupMsg(WORK_GROUP_ID, /*segment.at("all"),*/ segment.text(message + "\n" + url))
             .then(r => console.log("result: " + r.retcode + "; " + r.status))
         // qqBot.sendGroupMsg(WORK_GROUP_ID, segment.share(url, message))
         // .then(r => console.log("result: " + r.retcode + "; " + r.status));
