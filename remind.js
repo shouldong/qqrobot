@@ -112,7 +112,7 @@ function checkRecord() {
 
 function scheduleLiveJob() {
     jobLiveCancel = false
-    schedule.scheduleJob(JOB_LIVE, '0/5 * 20-22 * * *', ()=>{
+    schedule.scheduleJob(JOB_LIVE, '0/10 * 19-22 * * *', ()=>{
         console.log("checkLive: " + new Date())
         checkLive()
     })

@@ -1,10 +1,16 @@
 "use strict"
 
+let replyCoolDown = false;
+
 function autoReply(content) {
     console.log("autoReply: " + content)
+    if (replyCoolDown) {
+        return null;
+    }
     if (isBeAt(content)) {
         console.log("autoReply be at")
         let replay = dispatchContent(content)
+        SetReplyCoolDown();
         if (replay) {
             return replay
         } else {
@@ -12,6 +18,7 @@ function autoReply(content) {
         }
     }
     if (content.search('瓜瓜') !== -1 && content.search('贴贴') !== -1) {
+        SetReplyCoolDown();
         return "我也要贴贴瓜瓜"
     }
     return null
@@ -32,6 +39,13 @@ function dispatchContent(content) {
 
 function tellJoke() {
     return JOKE_ARR[Math.floor(Math.random() * JOKE_ARR.length)]
+}
+
+function SetReplyCoolDown() {
+    replyCoolDown = true;
+    setTimeout(() => {
+        replyCoolDown = false
+    }, 5000)
 }
 
 let JOKE_ARR = [

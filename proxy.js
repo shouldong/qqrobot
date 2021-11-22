@@ -52,7 +52,8 @@ function online() {
             let reply = text.autoReply(data.raw_message)
             console.log("msg.reply: " + reply)
             if (reply != null) {
-                data.reply(segment.reply(data.message_id), reply).then(r => console.log("result: " + r.retcode + "; " + r.status))
+                // segment.reply(data.message_id), reply
+                data.reply(segment.text(reply)).then(r => console.log("result: " + r.retcode + "; " + r.status))
             }
         }
     })
@@ -75,8 +76,8 @@ function share(message, url, atAll) {
         // qqBot.sendGroupMsg(WORK_GROUP_ID, segment.share(url, message))
         // .then(r => console.log("result: " + r.retcode + "; " + r.status));
     } else {
-        qqBot.sendPrivateMsg(MYSELF_ID, message + "\n" + url)
-            .then(r => console.log("result: " + r.retcode + "; " + r.status))
+        // qqBot.sendPrivateMsg(MYSELF_ID, message + "\n" + url)
+        //     .then(r => console.log("result: " + r.retcode + "; " + r.status))
     }
 }
 
