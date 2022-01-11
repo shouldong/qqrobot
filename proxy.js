@@ -15,7 +15,7 @@ let FACE_ID_FUNNY = 178;
 
 function online() {
     qqBot.on("system", (data) => {
-        console.log("system event: " + data.system_type)
+        console.log("system event: " + data.data)
     })
     qqBot.on("system.login.slider", () => {
         process.stdin.once("data", (input) => {
@@ -24,7 +24,7 @@ function online() {
     })
     qqBot.on("system.online", () => {
         console.log("上线了！")
-        for (let group of qqBot.getGroupList().data.values()) {
+        for (let group of qqBot.getGroupList().values()) {
             console.log("my group: " + group.group_name + "; " + group.group_id)
         }
         isOnline = true
@@ -71,8 +71,10 @@ function share(message, url, atAll) {
         return
     }
     if (atAll) {
-        qqBot.sendGroupMsg(WORK_GROUP_ID, /*segment.at("all"),*/ segment.text(message + "\n" + url))
-            .then(r => console.log("result: " + r.retcode + "; " + r.status))
+        // qqBot.sendGroupMsg(WORK_GROUP_ID, /*segment.at("all"),*/ segment.text(message + "\n" + url))
+        //     .then(r => console.log("result: " + r.retcode + "; " + r.status))
+        qqBot.sendGroupMsg(WORK_GROUP_ID, segment.text(message + "\n" + url))
+            .then(r => console.log("result: " + r.message_id + "; " + r.seq + "; " + r.rand));
         // qqBot.sendGroupMsg(WORK_GROUP_ID, segment.share(url, message))
         // .then(r => console.log("result: " + r.retcode + "; " + r.status));
     } else {

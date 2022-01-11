@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "node-schedule": "^2.0.0",
-    "oicq": "^1.15.2"
+    "oicq": "^2.1.8"
   }
 }
