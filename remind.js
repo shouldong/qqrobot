@@ -76,7 +76,6 @@ function checkUpdate() {
                 let code = json.code;
                 if (code !== 0)
                 {
-                    console.log("invalid ua: " + ua)
                     console.log("checkUpdate Error return: " + data)
                     return
                 }
