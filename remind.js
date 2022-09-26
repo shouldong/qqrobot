@@ -1,7 +1,6 @@
 "use strict"
 
 const https = require("https")
-const fakeUA = require("fake-useragent")
 const schedule = require('node-schedule')
 const proxy = require("./proxy")
 const fs = require("fs")
@@ -21,11 +20,20 @@ let jobRecordCancel = false
 let yesterdayRecord = ""
 
 
+const USER_AGENTS = []
+
+function randomUserAgent() {
+    let deviceIndex = Math.floor(Math.random() * (0 - USER_AGENTS.length) + USER_AGENTS.length)
+    let uaIndex = Math.floor(Math.random() * (0 - USER_AGENTS[deviceIndex].length) + USER_AGENTS[deviceIndex].length)
+    return USER_AGENTS[deviceIndex][uaIndex];
+}
+
+
 function checkLive() {
     const options = {
         hostname: 'api.live.bilibili.com',
         path: '/xlive/web-room/v1/index/getDanmuMedalAnchorInfo?ruid=8060090',
-        headers: { 'User-Agent': fakeUA() }
+        headers: { 'User-Agent': randomUserAgent() }
     }
     https.get(options, (resp) => {
         let data = ''
@@ -55,7 +63,7 @@ function checkUpdate() {
     const options = {
         hostname: 'api.bilibili.com',
         path: '/x/space/arc/search?mid=8060090&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp',
-        headers: { 'User-Agent': fakeUA() }
+        headers: { 'User-Agent': randomUserAgent() }
     }
     https.get(options, (resp) => {
         let data = ''
@@ -168,12 +176,31 @@ function stopRecordJob() {
     schedule.cancelJob(JOB_RECORD)
 }
 
+function loadUAConfig() {
+    let files = fs.readdirSync('./uaconfig')
+    for (let i = 0; i < 12; i++)
+    {
+        let data = fs.readFileSync('./uaconfig/' + files[i])
+        let config = JSON.parse(data)
+        for (let j = 0; j < 250; j++)
+        {
+            if (j === 0)
+            {
+                USER_AGENTS[i] = [];
+            }
+            USER_AGENTS[i][j] = config[j];
+        }
+    }
+}
+
 function start() {
     if (fs.existsSync('./data/lastVid')) {
         let buffer = fs.readFileSync('./data/lastVid')
         lastUpdateVid = buffer.toString()
     }
     console.log("lastUpdateVid: " + lastUpdateVid)
+
+    loadUAConfig()
 
     scheduleLiveJob()
     scheduleVideoJob()
