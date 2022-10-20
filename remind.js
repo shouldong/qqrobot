@@ -20,20 +20,14 @@ let jobRecordCancel = false
 let yesterdayRecord = ""
 
 
-const USER_AGENTS = []
-
-function randomUserAgent() {
-    let deviceIndex = Math.floor(Math.random() * (0 - USER_AGENTS.length) + USER_AGENTS.length)
-    let uaIndex = Math.floor(Math.random() * (0 - USER_AGENTS[deviceIndex].length) + USER_AGENTS[deviceIndex].length)
-    return USER_AGENTS[deviceIndex][uaIndex];
-}
-
-
 function checkLive() {
     const options = {
         hostname: 'api.live.bilibili.com',
         path: '/xlive/web-room/v1/index/getDanmuMedalAnchorInfo?ruid=8060090',
-        headers: { 'User-Agent': randomUserAgent() }
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
+            'cookie': 'LIVE_BUVID=AUTO6016214944556328; buvid3=9E84F568-64F3-93BC-CF53-8625119E130239113infoc; rpdid=|(umk)lkulJ)0J\'uYku)JuJR); video_page_version=v_old_home; CURRENT_BLACKGAP=0; blackside_state=0; i-wanna-go-back=-1; CURRENT_QUALITY=120; nostalgia_conf=-1; buvid_fp=9E84F568-64F3-93BC-CF53-8625119E130239113infoc; buvid_fp_plain=undefined; SESSDATA=538e34b8%2C1670414421%2Cf3b01%2A61; bili_jct=3ae52c15d94d4498efe6a2b43c5dcc4d; DedeUserID=2952576; DedeUserID__ckMd5=21cf6dff04678c55; sid=advtryls; b_ut=5; hit-dyn-v2=1; fingerprint3=9dab6d922722aabfbf89b55ae2b5695d; fingerprint=03e151e4a0d77c8712a7c1c147c3db65; b_nut=100; CURRENT_FNVAL=4048; bp_video_offset_2952576=706096201329541100'
+        }
     }
     https.get(options, (resp) => {
         let data = ''
@@ -63,7 +57,10 @@ function checkUpdate() {
     const options = {
         hostname: 'api.bilibili.com',
         path: '/x/space/arc/search?mid=8060090&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp',
-        headers: { 'User-Agent': randomUserAgent() }
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
+            'cookie': 'LIVE_BUVID=AUTO6016214944556328; buvid3=9E84F568-64F3-93BC-CF53-8625119E130239113infoc; rpdid=|(umk)lkulJ)0J\'uYku)JuJR); video_page_version=v_old_home; CURRENT_BLACKGAP=0; blackside_state=0; i-wanna-go-back=-1; CURRENT_QUALITY=120; nostalgia_conf=-1; buvid_fp=9E84F568-64F3-93BC-CF53-8625119E130239113infoc; buvid_fp_plain=undefined; SESSDATA=538e34b8%2C1670414421%2Cf3b01%2A61; bili_jct=3ae52c15d94d4498efe6a2b43c5dcc4d; DedeUserID=2952576; DedeUserID__ckMd5=21cf6dff04678c55; sid=advtryls; b_ut=5; hit-dyn-v2=1; fingerprint3=9dab6d922722aabfbf89b55ae2b5695d; fingerprint=03e151e4a0d77c8712a7c1c147c3db65; b_nut=100; CURRENT_FNVAL=4048; bp_video_offset_2952576=706096201329541100'
+        }
     }
     https.get(options, (resp) => {
         let data = ''
