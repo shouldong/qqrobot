@@ -173,6 +173,7 @@ function stopRecordJob() {
     schedule.cancelJob(JOB_RECORD)
 }
 
+let USER_AGENTS = []
 function loadUAConfig() {
     let files = fs.readdirSync('./uaconfig')
     for (let i = 0; i < 12; i++)
@@ -196,8 +197,6 @@ function start() {
         lastUpdateVid = buffer.toString()
     }
     console.log("lastUpdateVid: " + lastUpdateVid)
-
-    loadUAConfig()
 
     scheduleLiveJob()
     scheduleVideoJob()
