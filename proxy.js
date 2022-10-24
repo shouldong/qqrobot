@@ -1,6 +1,6 @@
 "use strict"
 
-const { createClient, segment} = require("oicq")
+const { createClient } = require("oicq")
 const uin = 631676243
 const qqBot = createClient(uin)
 const text = require('./chat')
@@ -16,11 +16,6 @@ let FACE_ID_FUNNY = 178;
 function online() {
     qqBot.on("system", (data) => {
         console.log("system event: " + data.data)
-    })
-    qqBot.on("system.login.slider", () => {
-        process.stdin.once("data", (input) => {
-            qqBot.sliderLogin(input)
-        })
     })
     qqBot.on("system.online", () => {
         console.log("上线了！")
@@ -57,8 +52,22 @@ function online() {
             }
         }
     })
-
+    // qqBot.on("system.login.slider", function (e) {
+    //     console.log("输入ticket：")
+    //     process.stdin.once("data", ticket => this.submitSlider(String(ticket).trim()))
+    // })
+    qqBot.on("system.login.slider", () => {
+        process.stdin.once("data", (input) => {
+            qqBot.sliderLogin(input)
+        })
+    })
     qqBot.login("23dd23b8cf68e175421e9bf7bf97315a")//mm:123456
+    // qqBot.on("system.login.qrcode", function (e) {
+    //     //扫码后按回车登录
+    //     process.stdin.once("data", () => {
+    //         this.qrcodeLogin()
+    //     })
+    // }).login()
 }
 
 function qqOnline() {
